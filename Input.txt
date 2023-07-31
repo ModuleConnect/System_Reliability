@@ -1,0 +1,5 @@
+\START1 \END5
+-L_N1 -MModA -R0.99 -R_N2
+-L_N2 -MModB -R0.97 -R_N3
+-L_N3 -MModC -R0.98 -R_N4
+-L_N4 -MModD -R0.90 -R_N5
