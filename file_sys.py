@@ -6,19 +6,20 @@ def read_modules_from_file(file_path):
     A function to read netlist format from file
     """
     modules = []
-    start_node = None
-    end_node = None
+    S_node = None
+    E_node = None
     with open(file_path, 'r') as file:
         for line in file:
             try:
                 if line.startswith('\\'):
-                    start_node, end_node = get_start_and_end_nodes(line)
-                module = parse_line_to_module(line)
-                modules.append(module)
+                    S_node, E_node = get_start_and_end_nodes(line)
+                else:
+                    module = parse_line_to_module(line)
+                    modules.append(module)
             except ValueError as e:
                 print(f"Error parsing line: '{line.strip()}'. {e}")
                 
-    return modules [start_node, end_node]
+    return modules, [S_node, E_node]
 
 
 def parse_line_to_module(line: str):
@@ -50,18 +51,25 @@ def parse_line_to_module(line: str):
             elif "-R" in parts[i]:
                 rel = parts[i][2:]
         
-            
+    print(f"lnode:{left_node} rnode:{right_node} value:{value} rel:{rel}")
                 
-    return Module(value, left_node, right_node, rel)
+    return Module(str(value), int(left_node), int(right_node), float(rel))
 
                 
 def get_start_and_end_nodes(line):
-    parts = line.strip()
-    if parts.startswith('\\'):
-        if "\START" in parts:
-            start_node = parts[6:]
-        elif "\END" in parts:
-            end_node = parts[4:]
+    start_node = None
+    end_node = None
+    parts = line.strip().split()
+    for i in range(len(parts)):
+        if parts[i].startswith('\\'):
+            if "\START" in parts[i]:
+                start_node = parts[i][6:]
+            elif "\END" in parts[i]:
+                end_node = parts[i][4:]
             
     return start_node, end_node
     
+    
+# ans = parse_line_to_module("\END4")
+# L, S = get_start_and_end_nodes("\END4")
+# print(L,S)
