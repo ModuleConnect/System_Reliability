@@ -51,7 +51,7 @@ def parse_line_to_module(line: str):
             elif "-R" in parts[i]:
                 rel = parts[i][2:]
         
-    print(f"lnode:{left_node} rnode:{right_node} value:{value} rel:{rel}")
+    # print(f"lnode:{left_node} rnode:{right_node} value:{value} rel:{rel}")
                 
     return Module(str(value), int(left_node), int(right_node), float(rel))
 

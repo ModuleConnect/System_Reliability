@@ -15,7 +15,7 @@ class Module:
         new_rel = self.rel * other.rel
         return Module("New_System", self.left_node, other.right_node, new_rel)
     def __or__(self, other):
-        new_rel = 1 - (other.failure * self.failure)
+        new_rel = 1 - (other.get_failure * self.get_failure)
         return Module('New_System',self.left_node, self. right_node, new_rel)
     def __repr__(self) -> str:
         return ( "\n{} has a reliability of {:5f}".format(self.name, self.rel))
