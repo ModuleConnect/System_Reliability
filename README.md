@@ -31,13 +31,14 @@ If the Modules are in Parallel, the Reliability of the sytem will be expressed a
 ## Sample Input
 This input should be a text file of the following format:
 
-    -n1 -mModuleA -r0.99 -n2
-    -n2 -mModuleB -r0.97 -n3
-    -n2 -mModuleC -r0.98 -n3
-    -n3 -mModuleD -r0.90 -n4
+    \START1 \END5
+    -L_n1 -MModuleA -R0.99 -RN2
+    -L_n2 -MModuleB -R0.97 -RN3
+    -L_n2 -MModuleC -R0.98 -RN3
+    -L_n3 -MModuleD -R0.90 -RN4
   
 
-Each line represents a module with options -n for the left node, -m for the module value, -r for the relaibility value, and -n for the right node
+Each line represents a module with options -L_N for the left node, -M for the module value/name, -R for the relaibility value, and -R_N for the right node
 
 The Expression shouuld be:
 
