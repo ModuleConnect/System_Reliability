@@ -1,9 +1,14 @@
-from Module import Module
+##TODO: Group the functions in a class
+##TODO: Break the recursive_build function into smaller functions
 
+#Get the next series module
 def next_series_node(arr, mod):
         return [module for module in arr if module.left_node == mod.right_node][0]
+
+#Return binary tree structure with a postfix traversal
 def buildExpression(array: list, start_node, end_node):
     no_of_mode = 0
+    parallel_block_no = 0
     # def get_end_node(parallel_modules):# TODO: wrong algorithm, Needs to br fixed
     #     return max([mod.right_node for mod in parallel_modules])
     
@@ -23,62 +28,68 @@ def buildExpression(array: list, start_node, end_node):
         return end_node
 
     def recursive_build(node, end_node_parallel):
-        nonlocal no_of_mode 
+        nonlocal no_of_mode, parallel_block_no
         # Base case
         if node == end_node:
-            return []# [array[node - 1].name] if 0 < node <= len(array) else [] # Subtract 1 as the node index starts from 1
+            return []
 
         
         # Recursive case
         parallel_modules = [module for module in array if module.left_node == node]
+        print('parallel', parallel_modules)
+        #When In Series
         if len(parallel_modules) == 1:
             mod = parallel_modules[0]
             array.remove(mod)
             no_of_mode += 1
-            # print(mod, 'ser')
             if array:
                 if mod.right_node < end_node_parallel:
-                    return [mod.name]  + recursive_build(mod.right_node, end_node_parallel) + ['*']
+                    if no_of_mode == 1:
+                        return [mod.name]  + recursive_build(mod.right_node, end_node_parallel) + ['*']
+                    return [mod.name]  + ['*'] + recursive_build(mod.right_node, end_node_parallel) 
                 elif mod.right_node == end_node_parallel:
                     return [mod.name] + ['*']
             else:
                 if no_of_mode == 1:
                     return [mod.name] 
-                return [mod.name]+ ['*']
+                return [mod.name]
+        #When In Parallel
         elif len(parallel_modules) > 1:
+            parallel_block_no += 1
             results = []
             end_node_parallel = get_end_node(parallel_modules)
-            # print(end_node_parallel)
+            print('end_of_parallel', end_node_parallel)
             count = 1
             for mod in parallel_modules:
-                # print(mod, "p")
-                # print(f"{mod.right_node} {end_node_parallel}")
+                array.remove(mod)
+                no_of_mode += 1
                 if mod.right_node < end_node_parallel:
                     paths = recursive_build(mod.right_node, end_node_parallel)
-                    # print(paths)
                     if count == 1:
                         results.extend([mod.name] + paths )
                     else:
                         results.extend([mod.name] + ['|'] + paths )
                 elif mod.right_node == end_node_parallel:
-                    # print(paths)
                     if count == 1:
                         results.extend([mod.name])
                     else:
                         results.extend([mod.name] + ['|'])
                 count += 1
-                array.remove(mod)
-                no_of_mode += 1
-            # print('res',results)
-            # print(end_node_parallel, 'endpara')
+                
+            if parallel_block_no != 1:
+                    print("Hellooo")
+                    results.extend(['*'])
+                # array.remove(mod)
+                # no_of_mode += 1
+            #Check if there are other modules after the end of parallel connection
             if end_node_parallel < end_node:
-                # print(array, 'after arr')
                 remaining_modules = [module for module in array if end_node_parallel == module.left_node]
-                # print("rem",remaining_modules)
-                # print(end_node, 'end')
                 paths = recursive_build(end_node_parallel, end_node)
-                # print(paths, 'after')
                 results.extend(paths)
+                
+                # if parallel_block_no != 1:
+                #     print("Hellooo")
+                #     results.extend(['*'])
                 # for mod in remaining_modules:
                 #     paths = recursive_build(mod.left_node, mod.right_node)
                 #     results.extend([mod.name] + paths + ['*'])
@@ -91,26 +102,13 @@ def buildExpression(array: list, start_node, end_node):
         return "No valid path from start_node to end_node."
     return result
 
-# Test with no valid path from start_node to end_node
-# text_inp = [
-#     Module('A', 1, 2, 0.99), 
-#     Module('B', 2, 3, 0.99),
-#     Module('C', 3, 5, 0.99), 
-#     Module('D', 2, 4, 0.99),
-#     Module('E', 4, 5, 0.99)
-#     ]
-# start_node = 1
-# end_node = 5
-# result = buildExpression(text_inp, start_node, end_node)
-# print(result)
-
-
 def is_operator(c):
     return c in {'*', '|'}
 
 def postfix_to_infix(postfix_expr):
     stack = []
     for token in postfix_expr:
+        # print(token)
         if not is_operator(token):  # Operand
             stack.append(token)
         elif is_operator(token):  # Operator
@@ -120,28 +118,18 @@ def postfix_to_infix(postfix_expr):
             # Adding parentheses to maintain operator precedence
             infix_expression = f"({operand1} {token} {operand2})"
             stack.append(infix_expression)
+            print(stack)
             
     return stack[0]
-            
+  
+#Convert the array of modules into dict
+#{
+#    'name':Mondule
+#}          
 def dictionarize(modules):
     new_dict = {}
-    # print(modules)
     for module in modules:
-        # print('module')
-        # print(module)
         new_dict[module.name] = module
         
     return new_dict       
             
-# exp = ['a', 'b', 'A', '*', '|']
-
-# ans = postfix_to_infix(exp)
-# modules = [
-#     Module('A', 1, 2, 0.9),
-#     Module('B', 2, 3, 0.9),
-#     Module('C', 3, 4, 0.9)
-    #  Module('D', 4, 5, 0.9)
-# ]
-
-# exp = buildExpression(modules, 1, 4)
-# print(exp)

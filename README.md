@@ -38,7 +38,7 @@ This input should be a text file of the following format:
     -L_n3 -MModuleD -R0.90 -RN4
   
 
-Each line represents a module with options -L_N for the left node, -M for the module value/name, -R for the relaibility value, and -R_N for the right node
+Each line represents a module with options -L_N for the left node, -M for the module value/name, -R for the relaibility value, and -R_N for the right node. ALso The Iinput needs to have a starting node and an ending node
 
 The Expression shouuld be:
 
