@@ -1,6 +1,7 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, 
-                             QTextEdit, QHBoxLayout)
+                             QTextEdit, QGraphicsView, QGraphicsScene, QHBoxLayout)
+from PyQt6.QtGui import QPixmap
 
 from src.file_sys import *
 from src.gen_exp import *
