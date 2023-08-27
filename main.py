@@ -1,6 +1,5 @@
-from gen_exp import *
-from file_sys import *
-from Module import Module
+from src.gen_exp import *
+from src.file_sys import *
 file_name = input("Enter you file name\n")
 print(f"Your file name is {file_name}")
 

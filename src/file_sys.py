@@ -1,4 +1,4 @@
-from Module import Module
+from src.Module import Module
 
 
 def read_modules_from_file(file_path): 
@@ -22,6 +22,23 @@ def read_modules_from_file(file_path):
     return modules, [S_node, E_node]
 
 
+def read_modules_from_string(input_String: str):
+    modules = []
+    S_node = None
+    E_node = None
+    lines = input_String.split("\n")
+    for line in lines:
+        print(line)
+        try:
+            if line.startswith('\\'):
+                S_node, E_node = get_start_and_end_nodes(line)
+            else:
+                module = parse_line_to_module(line)
+                modules.append(module)
+        except ValueError as e:
+            print(f"Error parsing line: '{line.strip()}'. {e}")
+                
+    return modules, [S_node, E_node]
 def parse_line_to_module(line: str):
     """_summary_
     Partition the line to retreive attributes of each module 

@@ -1,0 +1,15 @@
+/* Set the global background color and text color */
+QWidget {
+    background-color: #222222;
+    color: #ffffff;
+    font-family: Poppins;
+}
+
+/* QPushButton styles */
+QPushButton {
+    background-color: #500000;
+    color: #ffffff;
+    border: 1px solid #aaaaaa;
+    padding: 4px;
+    border-radius: 2px;
+}
