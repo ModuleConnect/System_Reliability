@@ -34,7 +34,22 @@ class ReliabilityApp(QWidget):
         layout.addWidget(image_label)
 
         # Add new instruction label
-        new_instruction_label = QLabel("Instructions on how to enter the input data: (Text description goes here)")
+        new_instruction_label = QLabel(
+            """Instructions on how to enter the input data: (Text description goes here)
+                This input should be a text file of the following format:
+
+                        \START1 \END5
+                        -L_N1 -MModuleA -R0.99 -R_N2
+                        -L_N2 -MModuleB -R0.97 -R_N3
+                        -L_N2 -MModuleC -R0.98 -R_N3
+                        -L_N3 -MModuleD -R0.90 -R_N4
+  
+
+            Each line represents a module with options:
+            -L_N for the left node, 
+            -M for the module value/name, 
+            -R for the relaibility value, and -R_N for the right node. 
+            ALso The Iinput needs to have a starting node and an ending node""")
         layout.addWidget(new_instruction_label)
 
         self.input_text = QTextEdit()
@@ -63,8 +78,8 @@ class ReliabilityApp(QWidget):
         self.setWindowTitle('Reliability Calculation App')
         self.resize(1000, 800)
 
-        self.setMinimumWidth(1000)
-        self.setMinimumHeight(800)
+        self.setMinimumWidth(700)
+        self.setMinimumHeight(700)
         self.show()
 
     def write_to_file(self, data):

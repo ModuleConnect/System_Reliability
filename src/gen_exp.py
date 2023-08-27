@@ -9,6 +9,8 @@ def next_series_node(arr, mod):
 def buildExpression(array: list, start_node, end_node):
     no_of_mode = 0
     parallel_block_no = 0
+    checked = False
+    parallel_started = False
     # def get_end_node(parallel_modules):# TODO: wrong algorithm, Needs to br fixed
     #     return max([mod.right_node for mod in parallel_modules])
     
@@ -28,7 +30,7 @@ def buildExpression(array: list, start_node, end_node):
         return end_node
 
     def recursive_build(node, end_node_parallel):
-        nonlocal no_of_mode, parallel_block_no
+        nonlocal no_of_mode, parallel_block_no, checked, parallel_started
         # Base case
         if node == end_node:
             return []
@@ -39,6 +41,8 @@ def buildExpression(array: list, start_node, end_node):
         print('parallel', parallel_modules)
         #When In Series
         if len(parallel_modules) == 1:
+            if not parallel_started:
+                series_started = True
             mod = parallel_modules[0]
             array.remove(mod)
             no_of_mode += 1
@@ -62,13 +66,15 @@ def buildExpression(array: list, start_node, end_node):
             count = 1
             for mod in parallel_modules:
                 array.remove(mod)
+                if no_of_mode == 0:
+                    parallel_started = True
                 no_of_mode += 1
                 if mod.right_node < end_node_parallel:
                     paths = recursive_build(mod.right_node, end_node_parallel)
                     if count == 1:
                         results.extend([mod.name] + paths )
                     else:
-                        results.extend([mod.name] + ['|'] + paths )
+                        results.extend([mod.name] + ['|'] + paths)
                 elif mod.right_node == end_node_parallel:
                     if count == 1:
                         results.extend([mod.name])
@@ -85,7 +91,17 @@ def buildExpression(array: list, start_node, end_node):
             if end_node_parallel < end_node:
                 remaining_modules = [module for module in array if end_node_parallel == module.left_node]
                 paths = recursive_build(end_node_parallel, end_node)
-                results.extend(paths)
+                if parallel_started and not checked:
+                    results.extend(paths + ['*'])
+                    checked = True
+                    print("Hahaha")
+                else:
+                    if parallel_block_no == 1:
+                        results.extend(paths + ['*'])
+                    else:
+                        results.extend(paths)  
+                        print("MMM")
+                    
                 
                 # if parallel_block_no != 1:
                 #     print("Hellooo")

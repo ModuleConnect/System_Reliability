@@ -11,8 +11,18 @@ The program takes input in the form of modules, where each module is represented
 
 Constructs expressions from modules and their connections.
 
-## Output
-The output of the program is to provide the reliability of the system given in the a netlist format.
+# Getting Started
+In order to get started install the packages from the requirements.txt using 
+
+    ```pip install -r requirements.txt```
+
+    
+cd into the gui directory in your terminal and run the ff to start the program;
+
+```python app.py```   or   ```python -m app```   For windows
+	
+```python3 app.py```  or ```python3 -m app```- For Linux, MacOS
+
 
 ### For Simplicity, assuming a system contains to module say ```A``` and ```B```;
 
@@ -27,6 +37,8 @@ If the Modules are in Parallel, the Reliability of the sytem will be expressed a
     R(sys) = A | B 
     where | denotes as the parallel connection
 
+## Output
+The output of the program is to provide the reliability of the system when given in the a netlist format of the your system as input.
 
 ## Sample Input
 This input should be a text file of the following format:
