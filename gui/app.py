@@ -3,6 +3,11 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushBu
                              QTextEdit, QGraphicsView, QGraphicsScene, QHBoxLayout)
 from PyQt6.QtGui import QPixmap
 
+
+from src.file_sys import *
+from src.gen_exp import *
+
+
 class ReliabilityApp(QWidget):
     def __init__(self):
         super().__init__()
@@ -14,6 +19,7 @@ class ReliabilityApp(QWidget):
         # Header
         app_title = QLabel("Reliability Calculation App")
         app_description = QLabel("This application calculates the reliability of the system based on the provided block diagram data.")
+
 
         # Instruction Image and Input Field
         instruction_label = QLabel("Enter the reliability block diagram data below:")
@@ -29,6 +35,7 @@ class ReliabilityApp(QWidget):
         layout.addWidget(new_instruction_label)
 
         self.input_text = QTextEdit()
+
 
         # Buttons
         btn_calculate = QPushButton("Calculate")
@@ -52,6 +59,7 @@ class ReliabilityApp(QWidget):
         self.setLayout(layout)
         self.setWindowTitle('Reliability Calculation App')
         self.resize(1000, 800)
+
         self.setMinimumWidth(1000)
         self.setMinimumHeight(800)
         self.show()
@@ -62,12 +70,33 @@ class ReliabilityApp(QWidget):
 
     def calculate_reliability(self):
         # Write input to Input.txt
-        data = self.input_text.toPlainText()
-        self.write_to_file(data)
+
+        # data = self.input_text.toPlainText()
+        # self.write_to_file(data)
+        print(self.input_text.toPlainText())
+
 
         # Dummy calculation for demonstration purposes.
         # Use the function/module you have in your app directory to get the actual reliability value.
-        reliability_value = 0.99
+        reliability_value = 0.99        
+        # Testing the backend
+        list_of_modules, nodes = read_modules_from_string(self.input_text.toPlainText())
+        dictionary = dictionarize(list_of_modules)
+        print("The following are the information retrieved form the file\n")
+        print(f"Start Node:{nodes[0]} and End Node:{nodes[1]}")
+
+        exp = buildExpression(list_of_modules, int(nodes[0]), int(nodes[1]), )
+        print(exp)
+
+        # final_exp = postfix_to_infix(['ModA', 'ModB', '|', 'ModC', '*', 'ModD', '*'])
+        final_exp = postfix_to_infix(exp)
+
+        print("The Expresion Of The New System:",final_exp)
+
+
+        res = eval(final_exp, dictionary)
+        print(res)
+        ######################################################################################
 
         # Display the result (you can use a QDialog or a QLabel)
         result_label = QLabel(f'Total Reliability: {reliability_value}')

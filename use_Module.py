@@ -1,5 +1,5 @@
-from Module import Module
-from gen_exp import *
+from src.Module import Module
+from src.gen_exp import *
 
 A = Module('A', 1, 2, 0.9)
 
