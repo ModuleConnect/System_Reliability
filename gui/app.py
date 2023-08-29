@@ -1,7 +1,8 @@
 import sys
-from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, 
-                             QTextEdit, QGraphicsView, QGraphicsScene, QHBoxLayout)
+from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QDialog,
+                             QTextEdit, QHBoxLayout)
 from PyQt6.QtGui import QPixmap
+from PyQt6.QtCore import Qt
 
 
 from src.file_sys import *
@@ -25,7 +26,7 @@ class ReliabilityApp(QWidget):
         instruction_label = QLabel("Enter the reliability block diagram data below:")
 
         # Add image to QLabel
-        pixmap = QPixmap('../Module_Diagram.jpg')  
+        pixmap = QPixmap('./Module_Diagram.jpg')  # Replace with the path to your image file
         image_label = QLabel()
         image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))  # Set size according to your need
         layout.addWidget(image_label)
