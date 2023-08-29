@@ -1,4 +1,6 @@
 import sys
+
+sys.path.append('../')
 from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QDialog,
                              QTextEdit, QHBoxLayout)
 from PyQt6.QtGui import QPixmap
@@ -26,7 +28,7 @@ class ReliabilityApp(QWidget):
         instruction_label = QLabel("Enter the reliability block diagram data below:")
 
         # Add image to QLabel
-        pixmap = QPixmap('./Module_Diagram.jpg')  # Replace with the path to your image file
+        pixmap = QPixmap('../Module_Diagram.jpg')  # Replace with the path to your image file
         image_label = QLabel()
         image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))  # Set size according to your need
         layout.addWidget(image_label)
@@ -72,8 +74,9 @@ class ReliabilityApp(QWidget):
     def calculate_reliability(self):
         # Write input to Input.txt
 
-        # data = self.input_text.toPlainText()
+        data = self.input_text.toPlainText().rstrip()
         # self.write_to_file(data)
+      
         print(self.input_text.toPlainText())
 
 
@@ -81,7 +84,7 @@ class ReliabilityApp(QWidget):
         # Use the function/module you have in your app directory to get the actual reliability value.
         reliability_value = 0.99        
         # Testing the backend
-        list_of_modules, nodes = read_modules_from_string(self.input_text.toPlainText())
+        list_of_modules, nodes = read_modules_from_string(data)
         dictionary = dictionarize(list_of_modules)
         print("The following are the information retrieved form the file\n")
         print(f"Start Node:{nodes[0]} and End Node:{nodes[1]}")
@@ -97,11 +100,27 @@ class ReliabilityApp(QWidget):
 
         res = eval(final_exp, dictionary)
         print(res)
+        reliability_value = res.rel
         ######################################################################################
 
         # Display the result (you can use a QDialog or a QLabel)
-        result_label = QLabel(f'Total Reliability: {reliability_value}')
-        result_label.show()
+        
+# Create a QDialog
+        dialog = QDialog()
+        dialog.setWindowTitle("Result Dialog")
+
+        # Create a QLabel for the result
+        result_label = QLabel(f"""The Expresion Of The System is :{final_exp},
+                              Total Reliability: {reliability_value}
+                              """, parent=dialog)
+
+        # Set the layout for the dialog and add the result label
+        dialog_layout = QVBoxLayout()
+        dialog_layout.addWidget(result_label)
+        dialog.setLayout(dialog_layout)
+
+        # Show the dialog
+        dialog.exec()
 
     def reset_app(self):
         self.input_text.clear()
@@ -109,7 +128,7 @@ class ReliabilityApp(QWidget):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = ReliabilityApp()
-    with open("gui/styles.qss", "r") as f:
+    with open("./styles.qss", "r") as f:
         styles = f.read()
         app.setStyleSheet(styles)
     sys.exit(app.exec())
