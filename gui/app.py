@@ -3,10 +3,9 @@ from PyQt6.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLabel, QPushBu
                              QTextEdit, QGraphicsView, QGraphicsScene, QHBoxLayout)
 from PyQt6.QtGui import QPixmap
 
+
 from src.file_sys import *
 from src.gen_exp import *
-
-
 
 
 class ReliabilityApp(QWidget):
@@ -21,11 +20,22 @@ class ReliabilityApp(QWidget):
         app_title = QLabel("Reliability Calculation App")
         app_description = QLabel("This application calculates the reliability of the system based on the provided block diagram data.")
 
-        # Instruction and Input Field
+
+        # Instruction Image and Input Field
         instruction_label = QLabel("Enter the reliability block diagram data below:")
+
+        # Add image to QLabel
+        pixmap = QPixmap('../Module_Diagram.jpg')  
+        image_label = QLabel()
+        image_label.setPixmap(pixmap.scaled(300, 300, Qt.AspectRatioMode.KeepAspectRatio))  # Set size according to your need
+        layout.addWidget(image_label)
+
+        # Add new instruction label
+        new_instruction_label = QLabel("Instructions on how to enter the input data: (Text description goes here)")
+        layout.addWidget(new_instruction_label)
+
         self.input_text = QTextEdit()
-        instruction_text = "Instructions on how to enter the input data :\n- First indicate how modules are connected by using - for series and | for parallel. \n- Secondly, represent each module in this notation ModA, ModB and so on. \n- Thirdly, after the first line that indicated how the modules are connected, the second lines should show the various reliabilities of each module like this: ModA = 0.99, MOdB = 0.89, and so on."
-        self.input_text.setPlaceholderText(instruction_text)
+
 
         # Buttons
         btn_calculate = QPushButton("Calculate")
@@ -49,8 +59,9 @@ class ReliabilityApp(QWidget):
         self.setLayout(layout)
         self.setWindowTitle('Reliability Calculation App')
         self.resize(1000, 800)
-        self.setMinimumWidth(700)
-        self.setMinimumHeight(700)
+
+        self.setMinimumWidth(1000)
+        self.setMinimumHeight(800)
         self.show()
 
     def write_to_file(self, data):
@@ -59,14 +70,15 @@ class ReliabilityApp(QWidget):
 
     def calculate_reliability(self):
         # Write input to Input.txt
+
         # data = self.input_text.toPlainText()
         # self.write_to_file(data)
         print(self.input_text.toPlainText())
 
+
         # Dummy calculation for demonstration purposes.
         # Use the function/module you have in your app directory to get the actual reliability value.
-        reliability_value = 0.99
-        
+        reliability_value = 0.99        
         # Testing the backend
         list_of_modules, nodes = read_modules_from_string(self.input_text.toPlainText())
         dictionary = dictionarize(list_of_modules)
@@ -85,6 +97,7 @@ class ReliabilityApp(QWidget):
         res = eval(final_exp, dictionary)
         print(res)
         ######################################################################################
+
         # Display the result (you can use a QDialog or a QLabel)
         result_label = QLabel(f'Total Reliability: {reliability_value}')
         result_label.show()
