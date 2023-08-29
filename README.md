@@ -32,10 +32,10 @@ If the Modules are in Parallel, the Reliability of the sytem will be expressed a
 This input should be a text file of the following format:
 
     \START1 \END5
-    -L_n1 -MModuleA -R0.99 -RN2
-    -L_n2 -MModuleB -R0.97 -RN3
-    -L_n2 -MModuleC -R0.98 -RN3
-    -L_n3 -MModuleD -R0.90 -RN4
+    -L_N1 -MModuleA -R0.99 -R_N2
+    -L_N2 -MModuleB -R0.97 -R_N3
+    -L_N2 -MModuleC -R0.98 -R_N3
+    -L_N3 -MModuleD -R0.90 -R_N4
   
 
 Each line represents a module with options -L_N for the left node, -M for the module value/name, -R for the relaibility value, and -R_N for the right node. ALso The Iinput needs to have a starting node and an ending node
